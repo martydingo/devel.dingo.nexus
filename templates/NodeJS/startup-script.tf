@@ -13,6 +13,8 @@ resource "coder_script" "startup_script" {
     userdel coder; useradd -m marty -G sudo -p `vault kv get -field=yescrypt kv/users/${lower(data.coder_workspace_owner.me.name)}/password` -s /bin/bash
     mkdir -p /home/${lower(data.coder_workspace_owner.me.name)}/.ssh
     echo `vault kv get -field=public -mount=kv users/${lower(data.coder_workspace_owner.me.name)}/ssh-key` > /home/marty/.ssh/authorized_keys
+    chown -R marty:marty /home/marty
+    chmod -R 600 /home/marty/.ssh
     service ssh start
   EOF
   run_on_start       = true
