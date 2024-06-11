@@ -41,8 +41,8 @@ resource "kubernetes_deployment" "main" {
       }
       spec {
         security_context {
-          run_as_user = 1000
-          fs_group    = 1000
+          run_as_user = 0
+          fs_group    = 0
         }
 
         container {
@@ -51,7 +51,7 @@ resource "kubernetes_deployment" "main" {
           image_pull_policy = "IfNotPresent"
           command           = ["sh", "-c", "${coder_agent.main.init_script}"]
           security_context {
-            run_as_user = "1000"
+            run_as_user = "0"
           }
           env {
             name  = "CODER_AGENT_TOKEN"
