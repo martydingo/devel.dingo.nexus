@@ -8,12 +8,13 @@ resource "coder_script" "startup_script" {
     set -e
     # Run programs at workspace startup
     ## install & configure ssh
-    sudo apt update; sudo apt install -y openssh-server
-    sudo sed -i 's/#AuthorizedKeysFile/AuthorizedKeysFile/' /etc/ssh/sshd_config
-    mkdir -p /home/coder/.ssh
-    echo `vault kv get -field=public -mount=kv users/${lower(data.coder_workspace_owner.me.name)}/ssh-key` > /home/coder/.ssh/authorized_keys
-    chmod -R 600 /home/coder/
-    sudo service ssh start
+    apt update; apt install -y openssh-server
+    sed -i 's/#AuthorizedKeysFile/AuthorizedKeysFile/' /etc/ssh/sshd_config
+    userdel coder; useradd -m marty -G sudo -p `vault kv get -field=yescrypt kv/users/${lower(data.coder_workspace_owner.me.name)}/password`
+    mkdir -p /home/${lower(data.coder_workspace_owner.me.name)}/.ssh
+    echo `vault kv get -field=public -mount=kv users/${lower(data.coder_workspace_owner.me.name)}/ssh-key` > /home/marty/.ssh/authorized_keys
+    chmod -R 600 /home/marty/
+    service ssh start
   EOF
   run_on_start       = true
   start_blocks_login = true
