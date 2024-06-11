@@ -63,8 +63,8 @@ resource "kubernetes_deployment" "main" {
               "memory" = "512Mi"
             }
             limits = {
-              "cpu"    = "${data.coder_parameter.cpu.value}"
-              "memory" = "${data.coder_parameter.memory.value}Gi"
+              "cpu"    = "${data.coder_parameter.cpu_core_count.value}"
+              "memory" = "${data.coder_parameter.memory_allocation.value}Gi"
             }
           }
           volume_mount {
@@ -77,7 +77,7 @@ resource "kubernetes_deployment" "main" {
         volume {
           name = "home"
           persistent_volume_claim {
-            claim_name = kubernetes_persistent_volume_claim.home.metadata.0.name
+            claim_name = kubernetes_persistent_volume_claim.user_disk.metadata.0.name
             read_only  = false
           }
         }

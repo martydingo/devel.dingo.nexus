@@ -1,3 +1,17 @@
+data "coder_parameter" "disk_size" {
+  name         = "disk_size"
+  display_name = "Disk Size"
+  description  = "The size of the disk that holds user data"
+  default      = "8"
+  type         = "number"
+  icon         = "/emojis/1f4be.png"
+  mutable      = false
+  validation {
+    min = 1
+    max = 32
+  }
+}
+
 data "coder_parameter" "cpu_core_count" {
   name         = "cpu_core_count"
   display_name = "CPU Core Count"
@@ -212,16 +226,3 @@ data "coder_parameter" "memory_allocation" {
   }
 }
 
-data "coder_parameter" "disk_size" {
-  name         = "disk_size"
-  display_name = "Disk Size"
-  description  = "The size of the disk that holds user data"
-  default      = "8"
-  type         = "number"
-  icon         = "/emojis/1f4be.png"
-  mutable      = false
-  validation {
-    min = 1
-    max = 32
-  }
-}

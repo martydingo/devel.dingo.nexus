@@ -19,10 +19,11 @@ resource "kubernetes_persistent_volume_claim" "user_disk" {
   }
   wait_until_bound = false
   spec {
-    access_modes = ["ReadWriteMany"]
+    access_modes       = ["ReadWriteMany"]
+    storage_class_name = "dynamic-persistent"
     resources {
       requests = {
-        storage = "${data.coder_parameter.home_disk_size.value}Gi"
+        storage = "${data.coder_parameter.disk_size.value}Gi"
       }
     }
   }
