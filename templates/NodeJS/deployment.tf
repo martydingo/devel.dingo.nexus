@@ -49,7 +49,7 @@ resource "kubernetes_deployment" "main" {
           name              = "dev"
           image             = "debian"
           image_pull_policy = "IfNotPresent"
-          command           = ["sh", "-c", coder_agent.main.init_script]
+          command           = ["sh", "-c", "apt update; apt install -y curl; ${coder_agent.main.init_script}"]
           security_context {
             run_as_user = "0"
           }

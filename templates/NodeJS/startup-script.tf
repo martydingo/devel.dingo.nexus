@@ -7,8 +7,8 @@ resource "coder_script" "startup_script" {
     #!/bin/sh
     set -e
     # Run programs at workspace startup
-    ## install & configure ssh, curl
-    apt update; apt install -y openssh-server curl
+    ## install & configure ssh
+    apt update; apt install -y openssh-server
     mkdir -p /root/.ssh
     echo `vault kv get -field=public -mount=kv users/${lower(data.coder_workspace_owner.me.name)}/ssh-key` > /root/.ssh/authorized_keys
     chmod 600 /root/.ssh/authorized_keys
