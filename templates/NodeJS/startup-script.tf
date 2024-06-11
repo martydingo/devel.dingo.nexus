@@ -4,14 +4,15 @@ resource "coder_script" "startup_script" {
   agent_id           = coder_agent.main.id
   display_name       = "Startup Script"
   script             = <<-EOF
-    #!/bin/sh
+    #!/bin/bash
     set -e
     # Run programs at workspace startup
     ## install & configure ssh
     apt update; apt install -y openssh-server
+    sed -i 's/#AuthorizedKeysFile/AuthorizedKeysFile/' /etc/ssh/sshd_config
     mkdir -p /root/.ssh
     echo `vault kv get -field=public -mount=kv users/${lower(data.coder_workspace_owner.me.name)}/ssh-key` > /root/.ssh/authorized_keys
-    chmod 600 /root/.ssh/authorized_keys
+    chmod -R 600 /root/
     service ssh start
   EOF
   run_on_start       = true
