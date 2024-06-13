@@ -36,7 +36,8 @@ resource "kubernetes_deployment" "main" {
     template {
       metadata {
         labels = {
-          "app.kubernetes.io/name" = "coder-workspace"
+          "app.kubernetes.io/name"     = "coder-workspace"
+          "app.kubernetes.io/instance" = "coder-workspace-${lower(data.coder_workspace_owner.me.name)}-${lower(data.coder_workspace.me.name)}"
         }
       }
       spec {
@@ -57,6 +58,11 @@ resource "kubernetes_deployment" "main" {
             name  = "CODER_AGENT_TOKEN"
             value = coder_agent.main.token
           }
+          port {
+            container_port = 22
+            name           = "ssh"
+            protocol       = "TCP"
+          }
           resources {
             requests = {
               "cpu"    = "250m"
@@ -68,7 +74,7 @@ resource "kubernetes_deployment" "main" {
             }
           }
           volume_mount {
-            mount_path = "/home/coder"
+            mount_path = "/root"
             name       = "home"
             read_only  = false
           }

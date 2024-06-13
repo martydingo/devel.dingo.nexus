@@ -1,3 +1,23 @@
+data "coder_parameter" "github_repository" {
+  name         = "github_repository"
+  display_name = "Github Repository"
+  description  = "The Github repository to clone into $HOME"
+  mutable      = false
+  type         = "string"
+  validation {
+    regex = "https://github.com.*$|^$"
+    error = "URL must be an https github URL"
+  }
+}
+
+data "coder_parameter" "load_balancer_ip" {
+  name         = "load_balancer_ip"
+  display_name = "Load Balancer IP"
+  description  = "The IP address of the K8S load balancer to configure"
+  mutable      = false
+  type         = "string"
+}
+
 data "coder_parameter" "disk_size" {
   name         = "disk_size"
   display_name = "Disk Size"

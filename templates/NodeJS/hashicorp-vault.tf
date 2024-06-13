@@ -4,4 +4,5 @@ module "vault" {
   agent_id             = coder_agent.main.id
   vault_addr           = "https://vault.dingo.nexus"
   coder_github_auth_id = "devel-dingo-nexus"
+  vault_cli_version    = "1.16.3"
 }
